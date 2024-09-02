@@ -9,6 +9,10 @@ const artistsRouter = express.Router();
 artistsRouter.get('/', async (_, res, next) => {
   try {
     const artists = await Artist.find();
+
+    if (artists.length === 0) {
+      return res.status(404).send({error: 'The list of artists is empty!'});
+    }
     return res.send(artists);
   } catch (error) {
     return next(error);

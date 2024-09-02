@@ -10,3 +10,9 @@ export interface AlbumsTypes {
   dataRelease: string,
   image: string | null,
 }
+
+export interface TracksTypes {
+  album: string,
+  title: string,
+  duration: string,
+}
