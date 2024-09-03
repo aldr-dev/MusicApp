@@ -8,10 +8,10 @@ const tracksRouter = express.Router();
 tracksRouter.get('/', async (req, res, next) => {
   try {
     let tracks;
-    const tracksId = req.query.tracks as string;
+    const tracksId = req.query.album as string;
 
     if (tracksId) {
-      tracks = await Track.find({album: tracksId}).populate('album', 'title');
+      tracks = await Track.find({album: tracksId}).populate('album');
       if (tracks.length === 0) {
         return res.status(404).send({error: 'Unable to get track list for contract album!'});
       }

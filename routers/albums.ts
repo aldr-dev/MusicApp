@@ -12,7 +12,7 @@ albumsRouter.get('/', async (req, res, next) => {
     const artistId = req.query.artist as string;
 
     if (artistId) {
-      albums = await Album.find({artist: artistId}).populate('artist', 'name');
+      albums = await Album.find({artist: artistId}).populate('artist');
       if (albums.length === 0) {
         return res.status(404).send({error: 'Failed to get list of albums for specific artist!'});
       }
@@ -32,9 +32,9 @@ albumsRouter.get('/:id', async (req, res, next) => {
   try {
    const id = req.params.id as string;
 
-   const findInfoAlbum = await Album.findById({_id: id}).populate('artist');
+   const findInfoAlbum = await Album.findById(id).populate('artist');
 
-   if (!findInfoAlbum) {
+   if (findInfoAlbum === null) {
      return res.status(404).send({error: 'Unable to retrieve album information including artist!'});
    }
 
