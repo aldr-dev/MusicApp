@@ -1,7 +1,8 @@
 import mongoose, {Schema, Types} from 'mongoose';
 import Album from './Album';
+import {TrackFields} from '../types';
 
-const TrackSchema = new mongoose.Schema({
+const TrackSchema = new mongoose.Schema<TrackFields>({
   album: {
     type: Schema.Types.ObjectId,
     ref: 'Album',

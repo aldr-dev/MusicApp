@@ -1,7 +1,8 @@
 import mongoose, {Schema, Types} from 'mongoose';
 import Artist from './Artist';
+import {AlbumFields} from '../types';
 
-const AlbumSchema = new mongoose.Schema({
+const AlbumSchema = new mongoose.Schema<AlbumFields>({
   artist: {
     type: Schema.Types.ObjectId,
     ref: 'Artist',
@@ -27,3 +28,4 @@ const AlbumSchema = new mongoose.Schema({
 
 const Album = mongoose.model('Album', AlbumSchema);
 export default Album;
+

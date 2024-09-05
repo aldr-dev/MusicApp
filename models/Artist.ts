@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
+import {ArtistFields} from '../types';
 
-const ArtistSchema = new mongoose.Schema({
+const ArtistSchema = new mongoose.Schema<ArtistFields>({
   name: {
     type: String,
     required: true,

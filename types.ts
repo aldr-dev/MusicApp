@@ -1,4 +1,4 @@
-import {Model} from 'mongoose';
+import mongoose, {Model} from 'mongoose';
 
 export interface ArtistTypes {
   name: string;
@@ -25,9 +25,38 @@ export interface UserFields {
   token: string;
 }
 
+export interface AlbumFields {
+  artist: mongoose.Types.ObjectId;
+  title: string;
+  dataRelease: string;
+  image?: string | null;
+}
+
+export interface ArtistFields {
+  name: string;
+  image?: string | null;
+  information?: string;
+}
+
+export interface TrackFields {
+  album: mongoose.Types.ObjectId;
+  title: string;
+  duration: string;
+}
+
+export interface TrackHistoryFields {
+  user: mongoose.Types.ObjectId;
+  track: mongoose.Types.ObjectId;
+  datetime: Date;
+}
+
 export interface UserMethods {
   checkPassword(password: string): Promise<boolean>;
   generateToken(): void;
 }
 
 export type UserModel = Model<UserFields, {}, UserMethods>;
+
+
+
+
