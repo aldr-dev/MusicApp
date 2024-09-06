@@ -7,16 +7,16 @@ export interface ArtistTypes {
 }
 
 export interface AlbumsTypes {
-  artist: string,
-  title: string,
-  dataRelease: string,
-  image: string | null,
+  artist: string;
+  title: string;
+  dataRelease: string;
+  image: string | null;
 }
 
 export interface TracksTypes {
-  album: string,
-  title: string,
-  duration: string,
+  album: string;
+  title: string;
+  duration: string;
 }
 
 export interface UserFields {
@@ -56,7 +56,3 @@ export interface UserMethods {
 }
 
 export type UserModel = Model<UserFields, {}, UserMethods>;
-
-
-
-
