@@ -25,6 +25,10 @@ usersRouter.post('/', async (req, res, next) => {
 
 usersRouter.post('/sessions', async (req, res, next) => {
   try {
+    if (!req.body.username || !req.body.password) {
+      return res.status(400).send({error: 'Username and Password fields are required!'});
+    }
+
     const user = await User.findOne({username: req.body.username});
 
     if (!user) {
@@ -34,7 +38,7 @@ usersRouter.post('/sessions', async (req, res, next) => {
     const isMatch = await user.checkPassword(req.body.password);
 
     if (!isMatch) {
-      return res.status(400).send({error: 'Password is wrong!'});
+      return res.status(400).send({error: 'Login or password is incorrect!'});
     }
 
     user.generateToken();
