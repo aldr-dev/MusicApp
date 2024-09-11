@@ -1,15 +1,15 @@
 import {createTheme} from '@mui/material';
 
 const theme = createTheme({
-  palette: {
-    background: {
-      default: '#212121',
-    },
-    text: {
-      primary: '#fff'
-    }
-  },
   components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          backgroundImage: 'linear-gradient(-180deg, rgba(50, 50, 50, .9), rgba(0, 0, 0, 0.9))',
+          minHeight: '100vh',
+        },
+      },
+    },
     MuiTextField: {
       defaultProps: {
         variant: 'outlined',
