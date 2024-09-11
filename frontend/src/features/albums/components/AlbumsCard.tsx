@@ -1,27 +1,25 @@
 import * as React from 'react';
-import {ArtistsTypes} from '../../../types';
+import {AlbumsTypes} from '../../../types';
 import noImage from '../../../assets/images/no-image.jpg';
 import {Card, CardContent, CardMedia, Typography} from '@mui/material';
 import {API_URL} from '../../../config';
-import {Link} from 'react-router-dom';
 
 interface Props {
-  artist: ArtistsTypes;
+  album: AlbumsTypes;
 }
 
-const ArtistCard: React.FC<Props> = ({artist}) => {
-  const imageUrl = artist.image ? `${API_URL}/${artist.image}` : noImage;
+const AlbumsCard: React.FC<Props> = ({album}) => {
+  const imageUrl = album.image ? `${API_URL}/${album.image}` : noImage;
   return (
-    <Card component={Link} to={`/albums/${artist._id}`} sx={{
+    <Card sx={{
       width: 220,
       cursor: 'pointer',
       textDecoration: 'none',
-      backgroundColor: 'transparent',
+      backgroundColor: 'rgba(31 ,31, 31, .5)',
       transition: '.3s ease-in-out',
       boxShadow: 'none',
       '&:hover': {
         transform: 'scale(1.02)',
-        backgroundColor: 'rgba(31 ,31, 31, .5)',
       },
     }}>
       <CardMedia
@@ -30,7 +28,7 @@ const ArtistCard: React.FC<Props> = ({artist}) => {
           height: 150,
           margin: 'auto',
           objectFit: 'cover',
-          borderRadius: '50%',
+          borderRadius: '10px',
           overflow: 'hidden',
           display: 'flex',
           alignItems: 'center',
@@ -38,14 +36,14 @@ const ArtistCard: React.FC<Props> = ({artist}) => {
           mt: 3
         }}
         image={imageUrl}
-        title="Фото исполнителя"
+        title="Фото альбома"
       />
       <CardContent>
-        <Typography sx={{color: '#fff'}} gutterBottom variant="h5" component="div">{artist.name}</Typography>
-        <Typography sx={{color: '#B3B3B3'}} variant="body2">Исполнитель</Typography>
+        <Typography sx={{color: '#fff', fontWeight: 'bold'}} gutterBottom variant="h5" component="div">{album.title}</Typography>
+        <Typography sx={{color: '#fff'}} gutterBottom variant="body2" component="div">{album.dataRelease}.г - {album.trackCount} трек(ов) &middot; <span style={{color: '#B3B3B3'}}>Альбом</span></Typography>
       </CardContent>
     </Card>
   );
 };
 
-export default ArtistCard;
+export default AlbumsCard;

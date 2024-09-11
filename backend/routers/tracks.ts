@@ -12,14 +12,8 @@ tracksRouter.get('/', async (req, res, next) => {
 
     if (tracksId) {
       tracks = await Track.find({album: tracksId}).populate('album');
-      if (tracks.length === 0) {
-        return res.status(404).send({error: 'Unable to get track list for contract album!'});
-      }
     } else {
       tracks = await Track.find();
-      if (tracks.length === 0) {
-        return res.status(404).send({error: 'Failed to get track list!'});
-      }
     }
     return res.send(tracks);
   } catch (error) {

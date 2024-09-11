@@ -3,6 +3,7 @@ import Album from '../models/Album';
 import {imagesUpload} from '../multer';
 import {AlbumsTypes} from '../types';
 import mongoose from 'mongoose';
+import Track from '../models/Track';
 
 const albumsRouter = express.Router();
 
@@ -12,17 +13,21 @@ albumsRouter.get('/', async (req, res, next) => {
     const artistId = req.query.artist as string;
 
     if (artistId) {
-      albums = await Album.find({artist: artistId}).populate('artist');
-      if (albums.length === 0) {
-        return res.status(404).send({error: 'Failed to get list of albums for specific artist!'});
-      }
+      albums = await Album.find({artist: artistId}).populate('artist').sort({ dataRelease: -1 });
     } else {
-      albums = await Album.find();
-      if (albums.length === 0) {
-        return res.status(404).send({error: 'Album list is empty!'});
-      }
+      albums = await Album.find().sort({ dataRelease: -1 });
     }
-    return res.send(albums);
+
+    const albumPromises = albums.map(async (album) => {
+      const trackCount = await Track.countDocuments({ album: album._id });
+      return {
+        ...album.toObject(),
+        trackCount
+      };
+    });
+
+    const albumsWithTrackCount = await Promise.all(albumPromises);
+    return res.send(albumsWithTrackCount);
   } catch (error) {
     return next(error);
   }

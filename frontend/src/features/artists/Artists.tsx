@@ -12,7 +12,7 @@ const Artists = () => {
   const artistFetchingLoader = useAppSelector(selectArtistsFetchingLoader);
 
   useEffect(() => {
-    const fetchArtistData = async () => {
+    const fetchArtists = async () => {
       try {
         await dispatch(fetchArtistsData()).unwrap();
       } catch (error) {
@@ -21,7 +21,7 @@ const Artists = () => {
       }
     };
 
-    void fetchArtistData();
+    void fetchArtists();
   }, [dispatch]);
 
   return (
@@ -32,7 +32,7 @@ const Artists = () => {
           {artistData.length === 0 ? (
             <Typography variant="body2" color="#fff">В данный момент наш список артистов пуст. Мы активно работаем над его
               наполнением и скоро вас порадуют новые имена! Спасибо за терпение.</Typography>) : (
-            <Box display="flex" gap={2} flexWrap="wrap">
+            <Box display="flex" sx={{mb: 2}} gap={1} flexWrap="wrap">
               {artistData.map((artist) => (
                 <ArtistCard key={artist._id} artist={artist}/>
               ))}
