@@ -17,6 +17,7 @@ export interface TracksTypes {
   album: string;
   title: string;
   duration: string;
+  trackNumber: number;
 }
 
 export interface UserFields {
@@ -28,7 +29,7 @@ export interface UserFields {
 export interface AlbumFields {
   artist: mongoose.Types.ObjectId;
   title: string;
-  dataRelease: string;
+  dataRelease: number;
   image?: string | null;
 }
 
@@ -42,6 +43,7 @@ export interface TrackFields {
   album: mongoose.Types.ObjectId;
   title: string;
   duration: string;
+  trackNumber: number;
 }
 
 export interface TrackHistoryFields {

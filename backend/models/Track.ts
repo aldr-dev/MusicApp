@@ -23,6 +23,10 @@ const TrackSchema = new mongoose.Schema<TrackFields>({
     type: String,
     required: true,
   },
+  trackNumber: {
+    type: Number,
+    required: true,
+  }
 });
 
 const Track = mongoose.model('Track', TrackSchema);
