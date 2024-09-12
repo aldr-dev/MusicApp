@@ -11,9 +11,9 @@ tracksRouter.get('/', async (req, res, next) => {
     const tracksId = req.query.album as string;
 
     if (tracksId) {
-      tracks = await Track.find({album: tracksId}).populate('album');
+      tracks = await Track.find({album: tracksId}).populate('album').sort({ trackNumber: 1 });
     } else {
-      tracks = await Track.find();
+      tracks = await Track.find().sort({ trackNumber: 1 });
     }
     return res.send(tracks);
   } catch (error) {

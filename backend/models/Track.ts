@@ -26,6 +26,7 @@ const TrackSchema = new mongoose.Schema<TrackFields>({
   trackNumber: {
     type: Number,
     required: true,
+    unique: true,
   }
 });
 
