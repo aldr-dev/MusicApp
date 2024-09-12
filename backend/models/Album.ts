@@ -28,4 +28,3 @@ const AlbumSchema = new mongoose.Schema<AlbumFields>({
 
 const Album = mongoose.model('Album', AlbumSchema);
 export default Album;
-

@@ -13,7 +13,7 @@ const TracksTable: React.FC<Props> = ({track}) => {
         {track.trackNumber}
       </TableCell>
       <TableCell sx={{color: '#fff', borderBottomColor: 'rgba(255, 255, 255, .1)'}}>
-        {track.trackNumber}
+        {track.title}
       </TableCell>
       <TableCell sx={{color: '#fff', borderBottomColor: 'rgba(255, 255, 255, .1)'}}>
         {track.duration}

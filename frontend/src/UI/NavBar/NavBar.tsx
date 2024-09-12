@@ -2,7 +2,7 @@ import {AppBar, Toolbar, Container, Typography, Box} from '@mui/material';
 import musicAppLogo from '../../assets/images/musicAppLogo.png';
 import {NavLink} from 'react-router-dom';
 
-const MyAppBar = () => {
+const NavBar = () => {
   return (
     <AppBar position="static" sx={{backgroundColor: '#000', mb: 3, p: .4}}>
       <Toolbar>
@@ -21,4 +21,4 @@ const MyAppBar = () => {
   );
 };
 
-export default MyAppBar;
+export default NavBar;

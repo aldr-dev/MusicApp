@@ -20,6 +20,10 @@ artistsRouter.get('/:id', async (req, res, next) => {
   try {
     const artist = await Artist.findOne({_id: req.params.id});
 
+    if (!artist) {
+      return res.status(404).send({error: 'Unable to retrieve artist!'});
+    }
+
     return res.send(artist);
   } catch (error) {
     return next(error);
