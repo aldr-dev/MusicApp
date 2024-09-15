@@ -2,6 +2,7 @@ import mongoose, {Schema, Types} from 'mongoose';
 import User from './User';
 import Track from './Track';
 import {TrackHistoryFields} from '../types';
+import Artist from './Artist';
 
 const TrackHistorySchema = new mongoose.Schema<TrackHistoryFields>({
   user: {
@@ -26,6 +27,18 @@ const TrackHistorySchema = new mongoose.Schema<TrackHistoryFields>({
         return Boolean(track);
       },
       message: 'Track does not exist',
+    }
+  },
+  artist: {
+    type: Schema.Types.ObjectId,
+    ref: 'Artist',
+    required: true,
+    validate: {
+      validator: async (value: Types.ObjectId) => {
+        const artist = await Artist.findById(value);
+        return Boolean(artist);
+      },
+      message: 'Artist does not exist',
     }
   },
   datetime: {

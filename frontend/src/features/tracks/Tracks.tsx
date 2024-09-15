@@ -4,6 +4,7 @@ import {fetchTracksData} from './tracksThunks';
 import {useParams} from 'react-router-dom';
 import {selectTracksData, selectTracksFetchingLoader} from './tracksSlice';
 import {fetchOneArtist} from '../artists/artistsThunks';
+import InfoIcon from '@mui/icons-material/Info';
 import {
   Box,
   CircularProgress,
@@ -19,9 +20,11 @@ import noImage from '../../assets/images/no-image.jpg';
 import {selectOneArtist} from '../artists/artistsSlice';
 import TracksTable from './components/TracksTable';
 import {toast} from 'react-toastify';
+import {selectUser} from '../users/usersSlice';
 
 const Tracks = () => {
   const {id} = useParams();
+  const user = useAppSelector(selectUser);
   const tracksData = useAppSelector(selectTracksData);
   const oneArtist = useAppSelector(selectOneArtist);
   const tracksFetchingLoader = useAppSelector(selectTracksFetchingLoader);
@@ -50,6 +53,7 @@ const Tracks = () => {
 
   return (
     <>
+      {!user && (<Box sx={{mb: 2, display: 'flex', alightItems: 'center', gap: '5px'}} color="#fff">{user ? null : (<><InfoIcon/> Чтобы прослушать треки, необходимо авторизоваться.</>)}</Box>)}
       <Typography sx={{mb: 2}} variant="h5" color="#fff">Треки</Typography>
       {tracksFetchingLoader ? (
         <CircularProgress sx={{color: '#fff'}}/>

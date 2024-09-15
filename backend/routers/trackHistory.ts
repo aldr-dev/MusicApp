@@ -1,34 +1,49 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import User from '../models/User';
 import TrackHistory from '../models/TrackHistory';
+import auth, {RequestWithUser} from '../middleware/auth';
+import Track from '../models/Track';
+import Album from '../models/Album';
+import Artist from '../models/Artist';
 
 const trackHistoryRouter = express.Router();
 
-trackHistoryRouter.post('/', async (req, res, next) => {
+trackHistoryRouter.get('/', auth, async (req: RequestWithUser, res, next) => {
   try {
-    const headerValue = req.get('Authorization');
+    const trackHistory = await TrackHistory.find({user: req.user?._id}).populate('track').populate('artist', 'name').sort({datetime: -1});
+    return res.send(trackHistory);
+  } catch (error) {
+    return next(error);
+  }
+});
 
-    if (!headerValue) {
-      return res.status(401).json({error: 'Header "Authorization" not found"'});
+trackHistoryRouter.post('/', auth, async (req: RequestWithUser, res, next) => {
+  try {
+    const trackId = req.body.track;
+    if (!trackId) {
+      return res.status(400).send({error: 'Track ID is required'});
     }
 
-    const [_bearer, token] = headerValue.split(' ');
-
-    if (!token) {
-      return res.status(401).send({error: 'Token not found'});
+    const track = await Track.findById(trackId);
+    if (!track) {
+      return res.status(404).send({error: 'No such track!'});
     }
 
-    const user = await User.findOne({token});
+    const album = await Album.findById(track.album);
+    if (!album) {
+      return res.status(404).send({error: 'No such album!'});
+    }
 
-    if (!user) {
-      return res.status(401).send({error: 'Wrong Token!'});
+    const artist = await Artist.findById(album.artist);
+    if (!artist) {
+      return res.status(404).send({error: 'No such artist!'});
     }
 
     const userHistory = new TrackHistory({
-      track: req.body.track,
-      user: user._id,
+      track: trackId,
+      user: req.user?._id,
       datetime: new Date().toISOString(),
+      artist: artist._id,
     });
 
     await userHistory.save();
