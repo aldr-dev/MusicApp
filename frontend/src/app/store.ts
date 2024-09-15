@@ -4,6 +4,7 @@ import {albumsReducer} from '../features/albums/albumsSlice';
 import {tracksReducer} from '../features/tracks/tracksSlice';
 import storage from 'redux-persist/lib/storage';
 import {persistReducer, FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, persistStore} from 'redux-persist';
+import {usersReducer} from '../features/users/usersSlice';
 
 const userPersistConfig = {
   key: 'musicApp:users',
