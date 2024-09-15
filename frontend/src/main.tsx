@@ -4,18 +4,21 @@ import {CssBaseline, ThemeProvider} from '@mui/material';
 import {Provider} from 'react-redux';
 import {ToastContainer} from 'react-toastify';
 import theme from './theme';
-import {store} from './app/store';
+import {persistor, store} from './app/store';
 import 'react-toastify/dist/ReactToastify.css';
 import {BrowserRouter} from 'react-router-dom';
+import {PersistGate} from 'redux-persist/integration/react';
 
 createRoot(document.getElementById('root')!).render(
   <Provider store={store}>
-    <BrowserRouter>
-      <ToastContainer position="bottom-right" theme="light" autoClose={3000}/>
-      <ThemeProvider theme={theme}>
-        <CssBaseline/>
-        <App/>
-      </ThemeProvider>
-    </BrowserRouter>
+    <PersistGate persistor={persistor}>
+      <BrowserRouter>
+        <ToastContainer position="bottom-right" theme="light" autoClose={3000}/>
+        <ThemeProvider theme={theme}>
+          <CssBaseline/>
+          <App/>
+        </ThemeProvider>
+      </BrowserRouter>
+    </PersistGate>
   </Provider>
 );
