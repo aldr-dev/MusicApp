@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Button, Grid, Menu, MenuItem } from '@mui/material';
+import {Button, Grid, Menu, MenuItem} from '@mui/material';
 import {User} from '../../types';
 import PersonIcon from '@mui/icons-material/Person';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import {Link} from 'react-router-dom';
 
 interface Props {
   user: User;
@@ -24,7 +25,7 @@ const UserMenu: React.FC<Props> = ({user}) => {
     <Grid item>
       <Button onClick={handleClick} color="inherit"><PersonIcon/> Привет, {user.username} <KeyboardArrowDownIcon/></Button>
       <Menu open={isOpen} anchorEl={anchorEl} onClose={handleClose} keepMounted>
-        <MenuItem>История прослушивания</MenuItem>
+        <MenuItem to='/track-history' component={Link}>История прослушивания</MenuItem>
       </Menu>
     </Grid>
   );
