@@ -27,6 +27,9 @@ const TrackSchema = new mongoose.Schema<TrackFields>({
     type: Number,
     required: true,
     unique: true,
+  },
+  youTubeLink: {
+    type: String,
   }
 });
 

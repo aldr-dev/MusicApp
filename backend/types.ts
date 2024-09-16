@@ -18,6 +18,7 @@ export interface TracksTypes {
   title: string;
   duration: string;
   trackNumber: number;
+  youTubeLink: string;
 }
 
 export interface UserFields {
@@ -44,6 +45,7 @@ export interface TrackFields {
   title: string;
   duration: string;
   trackNumber: number;
+  youTubeLink: string;
 }
 
 export interface TrackHistoryFields {

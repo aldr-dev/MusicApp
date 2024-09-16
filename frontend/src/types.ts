@@ -25,7 +25,8 @@ export interface TracksTypes {
   };
   title: string;
   duration: string;
-  trackNumber: number
+  trackNumber: number;
+  youTubeLink: string;
 }
 
 export interface RegisterMutation {

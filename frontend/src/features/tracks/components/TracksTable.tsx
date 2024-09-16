@@ -15,9 +15,16 @@ const TracksTable: React.FC<Props> = ({track}) => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
 
+  const playYouTubePlayer = (youTubeLink: string) => {
+    window.open(youTubeLink, 'YouTube Player', 'width=500,height=500');
+  };
+
   const handleClickPlayer = async (trackId: string) => {
     if (user) {
       try {
+        if (track.youTubeLink) {
+          playYouTubePlayer(track.youTubeLink);
+        }
         await dispatch(sendTrackHistories(trackId)).unwrap();
       } catch (error) {
         toast.error('Произошла непредвиденная ошибка. Повторите попытку позже.');
