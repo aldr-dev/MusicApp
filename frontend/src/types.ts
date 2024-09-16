@@ -59,3 +59,20 @@ export interface ValidationError {
 export interface GlobalError {
   error: string;
 }
+
+export interface TrackHistoryTypes {
+  _id: string;
+  user: string;
+  track: {
+    _id: string;
+    album: string;
+    title: string;
+    duration: string;
+    trackNumber: number;
+  }
+  artist: {
+    _id: string;
+    name: string;
+  }
+  datetime: Date;
+}
