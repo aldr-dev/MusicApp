@@ -56,11 +56,11 @@ albumsRouter.get('/', role, async (req: RequestWithUser, res, next) => {
         } else if (req.user.role === 'user') {
           albums = await Album.find({$or: [{isPublished: true}, {user: req.user._id, isPublished: false}]}, {user: 0}).sort({dataRelease: -1});
         } else {
-          albums = await Album.find({isPublished: true}, {user: 0}).sort({dataRelease: -1});
+          albums = await Album.find({isPublished: true}, {user: 0}).populate('artist').sort({dataRelease: -1});
         }
       }
     } else {
-      albums = await Album.find({isPublished: true}, {user: 0}).sort({dataRelease: -1});
+      albums = await Album.find({artist: artistId, isPublished: true}, {user: 0}).sort({dataRelease: -1});
     }
 
       const albumPromises = albums.map(async (album) => {

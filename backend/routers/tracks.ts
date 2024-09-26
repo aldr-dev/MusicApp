@@ -59,7 +59,7 @@ tracksRouter.get('/', role , async (req:RequestWithUser, res, next) => {
         }
       }
     } else {
-      tracks = await Track.find({isPublished: true}, {user: 0}).sort({trackNumber: 1});
+      tracks = await Track.find({album: tracksId, isPublished: true}, {user: 0}).populate('album').sort({trackNumber: 1});
     }
 
     return res.send(tracks);
