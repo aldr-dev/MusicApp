@@ -3,6 +3,7 @@ export interface ArtistsTypes {
   name: string;
   image: string | null;
   information: string;
+  isPublished: boolean;
 }
 
 export interface AlbumsTypes {
@@ -12,6 +13,7 @@ export interface AlbumsTypes {
   dataRelease: number,
   image: string | null;
   trackCount: number;
+  isPublished: boolean;
 }
 
 export interface TracksTypes {
@@ -22,11 +24,13 @@ export interface TracksTypes {
     image: string | null;
     artist: string;
     dataRelease: number;
+    isPublished: boolean;
   };
   title: string;
   duration: string;
   trackNumber: number;
   youTubeLink: string;
+  isPublished: boolean;
 }
 
 export interface RegisterMutation {
@@ -43,6 +47,7 @@ export interface User {
   _id: string;
   username: string;
   token: string;
+  role: string;
 }
 
 export interface ValidationError {
@@ -70,6 +75,7 @@ export interface TrackHistoryTypes {
     title: string;
     duration: string;
     trackNumber: number;
+    isPublished: boolean;
   }
   artist: {
     _id: string;

@@ -3,7 +3,6 @@ import {selectUser} from '../users/usersSlice';
 import {selectTrackHistories, selectTrackHistoryFetchingLoader} from './trackHistorySlice';
 import {useEffect} from 'react';
 import {toast} from 'react-toastify';
-import {Navigate} from 'react-router-dom';
 import {fetchTrackHistories} from './trackHistoryThunk';
 import {
   CircularProgress,
@@ -40,7 +39,6 @@ const TrackHistory = () => {
 
   return (
     <>
-      {!user ? (<Navigate to="/login"/>) : null}
       <Typography sx={{mb: 2}} variant="h5" color="#fff">История прослушивания</Typography>
       {trackHistoriesLoader ? (<CircularProgress sx={{color: '#fff'}}/>) : (
         <>

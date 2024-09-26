@@ -5,15 +5,9 @@ import {RootState} from '../../app/store';
 
 export const fetchTrackHistories = createAsyncThunk<TrackHistoryTypes[], void, { state: RootState }>(
   'trackHistory/fetchTrackHistories',
-  async (_, {getState, rejectWithValue}) => {
+  async (_, {rejectWithValue}) => {
     try {
-      const token = getState().users.user?.token;
-
-      if (!token) {
-        return rejectWithValue('Token is missing');
-      }
-
-      const {data: trackHistories} = await axiosApi.get<TrackHistoryTypes[]>('/track_history', {headers: {'Authorization': `Bearer ${token}`}});
+      const {data: trackHistories} = await axiosApi.get<TrackHistoryTypes[]>('/track_history');
       return trackHistories;
     } catch (error) {
       return rejectWithValue('Error fetching trackHistories ' + error);
@@ -23,19 +17,13 @@ export const fetchTrackHistories = createAsyncThunk<TrackHistoryTypes[], void, {
 
 
 export const sendTrackHistories = createAsyncThunk<void, string, { state: RootState }>(
-  'trackHistory/sendTrackHistories', async (trackId, {getState, rejectWithValue}) => {
+  'trackHistory/sendTrackHistories', async (trackId, {rejectWithValue}) => {
     try {
-      const token = getState().users.user?.token;
-
-      if (!token) {
-        return rejectWithValue('Token is missing');
-      }
-
       const data = {
         track: trackId,
       };
 
-      await axiosApi.post('/track_history', data, {headers: {'Authorization': `Bearer ${token}`}});
+      await axiosApi.post('/track_history', data);
     } catch (error) {
       return rejectWithValue('Error send trackHistories ' + error);
     }

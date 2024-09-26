@@ -8,6 +8,9 @@ import {persistor, store} from './app/store';
 import 'react-toastify/dist/ReactToastify.css';
 import {BrowserRouter} from 'react-router-dom';
 import {PersistGate} from 'redux-persist/integration/react';
+import {addInterceptors} from './axiosApi';
+
+addInterceptors(store);
 
 createRoot(document.getElementById('root')!).render(
   <Provider store={store}>
