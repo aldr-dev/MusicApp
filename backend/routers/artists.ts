@@ -1,10 +1,11 @@
 import express from 'express';
 import Artist from '../models/Artist';
 import mongoose from 'mongoose';
-import {ArtistTypes} from '../types';
+import {ArtistMutation, ArtistTypes} from '../types';
 import {imagesUpload} from '../multer';
 import auth, {RequestWithUser} from '../middleware/auth';
 import permit from '../middleware/permit';
+import role from '../middleware/role';
 
 const artistsRouter = express.Router();
 
@@ -33,9 +34,20 @@ artistsRouter.post('/', auth, imagesUpload.single('image'), async (req: RequestW
   }
 });
 
-artistsRouter.get('/', async (_, res, next) => {
+artistsRouter.get('/', role, async (req: RequestWithUser, res, next) => {
   try {
-    const artists = await Artist.find();
+    let artists: ArtistMutation[] = [];
+
+    if (req.user) {
+      if (req.user?.role === 'admin') {
+        artists = await Artist.find({}, {user: 0});
+      }
+      if (req.user?.role === 'user') {
+        artists = await Artist.find({ $or: [{ isPublished: true }, { user: req.user._id, isPublished: false }] }, { user: 0 });
+      }
+    } else {
+      artists = await Artist.find({ isPublished: true }, { user: 0 });
+    }
 
     return res.send(artists);
   } catch (error) {
@@ -51,6 +63,25 @@ artistsRouter.get('/:id', async (req, res, next) => {
       return res.status(404).send({error: 'Unable to retrieve artist!'});
     }
 
+    return res.send(artist);
+  } catch (error) {
+    return next(error);
+  }
+});
+
+artistsRouter.patch('/:id/togglePublished', auth, permit('admin'), async (req, res, next) => {
+  try {
+    const id = req.params.id;
+
+    const artist = await Artist.findById({_id: id});
+
+    if (!artist) {
+      return res.status(404).send({error: 'Artist not found'});
+    }
+
+    artist.isPublished = !artist.isPublished;
+
+    await artist.save();
     return res.send(artist);
   } catch (error) {
     return next(error);

@@ -4,6 +4,7 @@ import {TracksTypes} from '../types';
 import mongoose from 'mongoose';
 import auth, {RequestWithUser} from '../middleware/auth';
 import permit from '../middleware/permit';
+import role from '../middleware/role';
 
 const tracksRouter = express.Router();
 
@@ -34,17 +35,53 @@ tracksRouter.post('/', auth, async (req: RequestWithUser, res, next) => {
   }
 });
 
-tracksRouter.get('/', async (req, res, next) => {
+tracksRouter.get('/', role , async (req:RequestWithUser, res, next) => {
   try {
     let tracks;
     const tracksId = req.query.album as string;
 
-    if (tracksId) {
-      tracks = await Track.find({album: tracksId}).populate('album').sort({trackNumber: 1});
+    if (req.user) {
+      if (tracksId) {
+        if (req.user.role === 'admin') {
+          tracks = await Track.find({album: tracksId}, {user: 0}).populate('album').sort({trackNumber: 1});
+        } else if (req.user.role === 'user') {
+          tracks = await Track.find({album: tracksId, $or: [{isPublished: true}, {user: req.user._id, isPublished: false}]}, {user: 0}).populate('album').sort({trackNumber: 1});
+        } else {
+          tracks = await Track.find({album: tracksId, isPublished: true}, {user: 0}).populate('album').sort({trackNumber: 1});
+        }
+      } else {
+        if (req.user.role === 'admin') {
+          tracks = await Track.find({}, {user: 0}).sort({trackNumber: 1});
+        } else if (req.user.role === 'user') {
+          tracks = await Track.find({$or: [{isPublished: true}, {user: req.user._id, isPublished: false}]}, {user: 0}).sort({trackNumber: 1});
+        } else {
+          tracks = await Track.find({isPublished: true}, {user: 0}).sort({trackNumber: 1});
+        }
+      }
     } else {
-      tracks = await Track.find().sort({trackNumber: 1});
+      tracks = await Track.find({isPublished: true}, {user: 0}).sort({trackNumber: 1});
     }
+
     return res.send(tracks);
+  } catch (error) {
+    return next(error);
+  }
+});
+
+tracksRouter.patch('/:id/togglePublished', auth, permit('admin'), async (req, res, next) => {
+  try {
+    const id = req.params.id;
+
+    const track = await Track.findById({_id: id});
+
+    if (!track) {
+      return res.status(404).send({error: 'Track not found'});
+    }
+
+    track.isPublished = !track.isPublished;
+
+    await track.save();
+    return res.send(track);
   } catch (error) {
     return next(error);
   }

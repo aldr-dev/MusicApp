@@ -24,7 +24,7 @@ const UserSchema = new mongoose.Schema<UserFields, UserModel, UserMethods>({
   },
   password: {
     type: String,
-    required: true,
+    required: [true, 'Password cannot be empty!'],
   },
   token: {
     type: String,

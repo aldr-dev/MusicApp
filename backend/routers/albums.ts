@@ -6,6 +6,7 @@ import mongoose from 'mongoose';
 import Track from '../models/Track';
 import auth, {RequestWithUser} from '../middleware/auth';
 import permit from '../middleware/permit';
+import role from '../middleware/role';
 
 const albumsRouter = express.Router();
 
@@ -35,27 +36,43 @@ albumsRouter.post('/', auth, imagesUpload.single('image'), async (req: RequestWi
   }
 });
 
-albumsRouter.get('/', async (req, res, next) => {
+albumsRouter.get('/', role, async (req: RequestWithUser, res, next) => {
   try {
     let albums;
     const artistId = req.query.artist as string;
 
-    if (artistId) {
-      albums = await Album.find({artist: artistId}).populate('artist').sort({dataRelease: -1});
+    if (req.user) {
+      if (artistId) {
+        if (req.user.role === 'admin') {
+          albums = await Album.find({artist: artistId}, {user: 0}).populate('artist').sort({dataRelease: -1});
+        } else if (req.user.role === 'user') {
+          albums = await Album.find({artist: artistId, $or: [{isPublished: true}, {user: req.user._id, isPublished: false}]}, {user: 0}).populate('artist').sort({dataRelease: -1});
+        } else {
+          albums = await Album.find({artist: artistId, isPublished: true}, {user: 0}).populate('artist').sort({dataRelease: -1});
+        }
+      } else {
+        if (req.user.role === 'admin') {
+          albums = await Album.find({}, {user: 0}).sort({dataRelease: -1});
+        } else if (req.user.role === 'user') {
+          albums = await Album.find({$or: [{isPublished: true}, {user: req.user._id, isPublished: false}]}, {user: 0}).sort({dataRelease: -1});
+        } else {
+          albums = await Album.find({isPublished: true}, {user: 0}).sort({dataRelease: -1});
+        }
+      }
     } else {
-      albums = await Album.find().sort({dataRelease: -1});
+      albums = await Album.find({isPublished: true}, {user: 0}).sort({dataRelease: -1});
     }
 
-    const albumPromises = albums.map(async (album) => {
-      const trackCount = await Track.countDocuments({album: album._id});
-      return {
-        ...album.toObject(),
-        trackCount
-      };
-    });
+      const albumPromises = albums.map(async (album) => {
+        const trackCount = await Track.countDocuments({album: album._id});
+        return {
+          ...album.toObject(),
+          trackCount
+        };
+      });
 
-    const albumsWithTrackCount = await Promise.all(albumPromises);
-    return res.send(albumsWithTrackCount);
+      const albumsWithTrackCount = await Promise.all(albumPromises);
+      return res.send(albumsWithTrackCount);
   } catch (error) {
     return next(error);
   }
@@ -72,6 +89,25 @@ albumsRouter.get('/:id', async (req, res, next) => {
     }
 
     return res.send(findInfoAlbum);
+  } catch (error) {
+    return next(error);
+  }
+});
+
+albumsRouter.patch('/:id/togglePublished', auth, permit('admin'), async (req, res, next) => {
+  try {
+    const id = req.params.id;
+
+    const album = await Album.findById({_id: id});
+
+    if (!album) {
+      return res.status(404).send({error: 'Album not found'});
+    }
+
+    album.isPublished = !album.isPublished;
+
+    await album.save();
+    return res.send(album);
   } catch (error) {
     return next(error);
   }

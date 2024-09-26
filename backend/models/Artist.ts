@@ -17,7 +17,7 @@ const ArtistSchema = new mongoose.Schema<ArtistFields>({
   },
   name: {
     type: String,
-    required: true,
+    required: [true, 'Artist name cannot be empty'],
   },
   image: String,
   information: String,

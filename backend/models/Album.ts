@@ -19,7 +19,7 @@ const AlbumSchema = new mongoose.Schema<AlbumFields>({
   artist: {
     type: Schema.Types.ObjectId,
     ref: 'Artist',
-    required: true,
+    required: [true, 'Artist ID must be present'],
     validate: {
       validator: async (value: Types.ObjectId) => {
         const artist = await Artist.findById(value);
@@ -30,11 +30,11 @@ const AlbumSchema = new mongoose.Schema<AlbumFields>({
   },
   title: {
     type: String,
-    required: true,
+    required: [true, 'Title must be present'],
   },
   dataRelease: {
     type: Number,
-    required: true,
+    required: [true, 'DataRelease must be present'],
   },
   image: String,
   isPublished: {

@@ -19,7 +19,7 @@ const TrackSchema = new mongoose.Schema<TrackFields>({
   album: {
     type: Schema.Types.ObjectId,
     ref: 'Album',
-    required: true,
+    required: [true, 'Album must be present'],
     validate: {
       validator: async (value: Types.ObjectId) => {
         const album = await Album.findById(value);
@@ -30,15 +30,15 @@ const TrackSchema = new mongoose.Schema<TrackFields>({
   },
   title: {
     type: String,
-    required: true,
+    required: [true, 'Title must be present'],
   },
   duration: {
     type: String,
-    required: true,
+    required: [true, 'Duration must be present'],
   },
   trackNumber: {
     type: Number,
-    required: true,
+    required: [true, 'TrackNumber must be present'],
     unique: true,
   },
   youTubeLink: {
