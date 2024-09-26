@@ -8,15 +8,6 @@ import Artist from '../models/Artist';
 
 const trackHistoryRouter = express.Router();
 
-trackHistoryRouter.get('/', auth, async (req: RequestWithUser, res, next) => {
-  try {
-    const trackHistory = await TrackHistory.find({user: req.user?._id}).populate('track').populate('artist', 'name').sort({datetime: -1});
-    return res.send(trackHistory);
-  } catch (error) {
-    return next(error);
-  }
-});
-
 trackHistoryRouter.post('/', auth, async (req: RequestWithUser, res, next) => {
   try {
     const trackId = req.body.track;
@@ -52,6 +43,15 @@ trackHistoryRouter.post('/', auth, async (req: RequestWithUser, res, next) => {
     if (error instanceof mongoose.Error.ValidationError) {
       return res.status(400).send(error);
     }
+    return next(error);
+  }
+});
+
+trackHistoryRouter.get('/', auth, async (req: RequestWithUser, res, next) => {
+  try {
+    const trackHistory = await TrackHistory.find({user: req.user?._id}).populate('track').populate('artist', 'name').sort({datetime: -1});
+    return res.send(trackHistory);
+  } catch (error) {
     return next(error);
   }
 });

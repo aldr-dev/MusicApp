@@ -1,12 +1,14 @@
 import mongoose, {Model} from 'mongoose';
 
 export interface ArtistTypes {
+  user: mongoose.Types.ObjectId;
   name: string;
   image: string | null;
   information: string;
 }
 
 export interface AlbumsTypes {
+  user: mongoose.Types.ObjectId;
   artist: string;
   title: string;
   dataRelease: string;
@@ -14,6 +16,7 @@ export interface AlbumsTypes {
 }
 
 export interface TracksTypes {
+  user: mongoose.Types.ObjectId;
   album: string;
   title: string;
   duration: string;
@@ -29,24 +32,30 @@ export interface UserFields {
 }
 
 export interface AlbumFields {
+  user: mongoose.Types.ObjectId;
   artist: mongoose.Types.ObjectId;
   title: string;
   dataRelease: number;
   image?: string | null;
+  isPublished: boolean;
 }
 
 export interface ArtistFields {
+  user: mongoose.Types.ObjectId;
   name: string;
   image?: string | null;
   information?: string;
+  isPublished: boolean;
 }
 
 export interface TrackFields {
+  user: mongoose.Types.ObjectId;
   album: mongoose.Types.ObjectId;
   title: string;
   duration: string;
   trackNumber: number;
   youTubeLink: string;
+  isPublished: boolean;
 }
 
 export interface TrackHistoryFields {

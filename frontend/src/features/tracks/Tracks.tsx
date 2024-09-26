@@ -89,7 +89,7 @@ const Tracks = () => {
               новыми хитами! Спасибо за ваше терпение.
             </Typography>
           ) : (
-            <TableContainer sx={{height: 'calc(100vh - 400px)', overflowX: 'auto'}}>
+            <TableContainer sx={{height: 'calc(100vh - 420px)', overflowX: 'auto'}}>
               <Table>
                 <TableHead>
                   <TableRow>
