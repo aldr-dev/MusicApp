@@ -1,19 +1,23 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {ArtistsTypes} from '../../types';
-import {fetchArtistsData, fetchOneArtist} from './artistsThunks';
+import {ArtistsTypes, ValidationError} from '../../types';
+import {createArtist, fetchArtistsData, fetchOneArtist} from './artistsThunks';
 
 interface ArtistsState {
   artistsData: ArtistsTypes[];
   oneArtist: ArtistsTypes | null;
+  createLoading: boolean;
   artistsFetchingLoader: boolean;
   oneArtistFetchingLoader: boolean;
+  createError: ValidationError | null;
 }
 
 const initialState: ArtistsState = {
   artistsData: [],
   oneArtist: null,
+  createLoading: false,
   artistsFetchingLoader: false,
   oneArtistFetchingLoader: false,
+  createError: null,
 };
 
 export const artistsSlice = createSlice({
@@ -21,6 +25,17 @@ export const artistsSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
+    builder.addCase(createArtist.pending, (state) => {
+      state.createLoading = true;
+    });
+    builder.addCase(createArtist.fulfilled, (state) => {
+      state.createLoading = false;
+    });
+    builder.addCase(createArtist.rejected, (state, {payload: error}) => {
+      state.createLoading = false;
+      state.createError = error || null;
+    });
+
     builder.addCase(fetchArtistsData.pending, (state) => {
       state.artistsFetchingLoader = true;
     });
@@ -47,8 +62,16 @@ export const artistsSlice = createSlice({
     selectArtistsData: (state) => state.artistsData,
     selectArtistsFetchingLoader: (state) => state.artistsFetchingLoader,
     selectOneArtist: (state) => state.oneArtist,
+    selectArtistCreateLoading: (state) => state.createLoading,
+    selectArtistCreateError: (state) => state.createError,
   },
 });
 
 export const artistsReducer = artistsSlice.reducer;
-export const {selectArtistsData, selectArtistsFetchingLoader, selectOneArtist} = artistsSlice.selectors;
+export const {
+  selectArtistsData,
+  selectArtistsFetchingLoader,
+  selectOneArtist,
+  selectArtistCreateLoading,
+  selectArtistCreateError,
+} = artistsSlice.selectors;

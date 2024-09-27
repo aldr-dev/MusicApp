@@ -48,16 +48,6 @@ export interface ArtistFields {
   isPublished: boolean;
 }
 
-export interface ArtistMutation {
-  _id: string
-  user: string
-  name: string;
-  image?: string | null;
-  information?: string;
-  isPublished: boolean;
-  __v: number;
-}
-
 export interface TrackFields {
   user: mongoose.Types.ObjectId;
   album: mongoose.Types.ObjectId;

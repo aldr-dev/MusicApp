@@ -43,6 +43,12 @@ export interface LoginMutation {
   password: string;
 }
 
+export interface CreateArtistMutation {
+  name: string
+  information: string
+  image: File | null;
+}
+
 export interface User {
   _id: string;
   username: string;

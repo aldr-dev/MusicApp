@@ -1,7 +1,7 @@
 import express from 'express';
 import Artist from '../models/Artist';
 import mongoose from 'mongoose';
-import {ArtistMutation, ArtistTypes} from '../types';
+import {ArtistTypes} from '../types';
 import {imagesUpload} from '../multer';
 import auth, {RequestWithUser} from '../middleware/auth';
 import permit from '../middleware/permit';
@@ -36,17 +36,17 @@ artistsRouter.post('/', auth, imagesUpload.single('image'), async (req: RequestW
 
 artistsRouter.get('/', role, async (req: RequestWithUser, res, next) => {
   try {
-    let artists: ArtistMutation[] = [];
+    let artists;
 
     if (req.user) {
       if (req.user?.role === 'admin') {
-        artists = await Artist.find({}, {user: 0});
+        artists = await Artist.find({}, { user: 0 }).sort({ _id: -1 });
       }
       if (req.user?.role === 'user') {
-        artists = await Artist.find({ $or: [{ isPublished: true }, { user: req.user._id, isPublished: false }] }, { user: 0 });
+        artists = await Artist.find({ $or: [{ isPublished: true }, { user: req.user._id, isPublished: false }] }, { user: 0 }).sort({ _id: -1 });
       }
     } else {
-      artists = await Artist.find({ isPublished: true }, { user: 0 });
+      artists = await Artist.find({ isPublished: true }, { user: 0 }).sort({ _id: -1 });
     }
 
     return res.send(artists);
