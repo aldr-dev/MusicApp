@@ -20,7 +20,7 @@ albumsRouter.post('/', auth, imagesUpload.single('image'), async (req: RequestWi
       user: req.user?._id,
       artist: req.body.artist,
       title: req.body.title,
-      dataRelease: req.body.dataRelease,
+      dataRelease: parseFloat(req.body.dataRelease),
       image: req.file ? req.file.filename : null,
     };
 

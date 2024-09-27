@@ -12,6 +12,7 @@ import {useAppSelector} from './app/hooks';
 import {selectUser} from './features/users/usersSlice';
 import ProtectedRoute from './UI/ProtectedRoute/ProtectedRoute';
 import ArtistForm from './features/artists/components/ArtistForm';
+import AlbumForm from './features/albums/components/AlbumForm';
 
 const App = () => {
   const user = useAppSelector(selectUser);
@@ -26,9 +27,14 @@ const App = () => {
           <Route path="/tracks/:id" element={<Tracks/>} />
           <Route path="/register" element={<Register/>} />
           <Route path="/login" element={<Login/>} />
+          <Route path="/add-new-album" element={
+            <ProtectedRoute isAllowed={user && (user.role === 'user' || user.role === 'admin')}>
+            <AlbumForm/>
+            </ProtectedRoute>
+          } />
           <Route path="/add-new-artist" element={
             <ProtectedRoute isAllowed={user && (user.role === 'user' || user.role === 'admin')}>
-            <ArtistForm/>
+              <ArtistForm/>
             </ProtectedRoute>
           } />
           <Route path="/track-history" element={

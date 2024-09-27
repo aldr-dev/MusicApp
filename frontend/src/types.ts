@@ -44,10 +44,18 @@ export interface LoginMutation {
 }
 
 export interface CreateArtistMutation {
-  name: string
-  information: string
+  name: string;
+  information: string;
   image: File | null;
 }
+
+export interface CreateAlbumMutation {
+  artist: string;
+  title: string;
+  dataRelease: string;
+  image: File | null;
+}
+
 
 export interface User {
   _id: string;

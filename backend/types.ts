@@ -11,7 +11,7 @@ export interface AlbumsTypes {
   user: mongoose.Types.ObjectId;
   artist: string;
   title: string;
-  dataRelease: string;
+  dataRelease: number;
   image: string | null;
 }
 

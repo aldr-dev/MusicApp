@@ -4,11 +4,7 @@ import {ArtistsTypes, CreateArtistMutation, ValidationError} from '../../types';
 import {RootState} from '../../app/store';
 import {isAxiosError} from 'axios';
 
-
-export const createArtist = createAsyncThunk<void, CreateArtistMutation, {
-  state: RootState,
-  rejectValue: ValidationError
-}>(
+export const createArtist = createAsyncThunk<void, CreateArtistMutation, { state: RootState, rejectValue: ValidationError }>(
   'artists/createArtist', async (data, {rejectWithValue}) => {
     try {
       const formData = new FormData();
