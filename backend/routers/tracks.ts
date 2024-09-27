@@ -19,8 +19,8 @@ tracksRouter.post('/', auth, async (req: RequestWithUser, res, next) => {
       album: req.body.album,
       title: req.body.title,
       duration: req.body.duration,
-      trackNumber: req.body.trackNumber,
-      youTubeLink: req.body.youTubeLink,
+      trackNumber: parseFloat(req.body.trackNumber),
+      youTubeLink: req.body.youTubeLink ? req.body.youTubeLink : null,
     };
 
     const track = new Track(trackData);

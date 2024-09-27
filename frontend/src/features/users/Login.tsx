@@ -168,6 +168,10 @@ const Login = () => {
             '&:hover': {
               backgroundColor: '#14A94B',
             },
+            '&.Mui-disabled': {
+              background: '#b2b2b2',
+              color: '#757575',
+            },
             color: '#fff',
             borderRadius: '8px',
             fontWeight: 'bold',

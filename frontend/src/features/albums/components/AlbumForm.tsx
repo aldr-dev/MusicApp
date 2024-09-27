@@ -259,6 +259,10 @@ const AlbumForm = () => {
             background: '#1CD760',
             '&:hover': {
               background: '#14af4d',
+            },
+            '&.Mui-disabled': {
+              background: '#b2b2b2',
+              color: '#757575',
             }
           }}
           color="primary"

@@ -21,7 +21,7 @@ export interface TracksTypes {
   title: string;
   duration: string;
   trackNumber: number;
-  youTubeLink: string;
+  youTubeLink: string | null;
 }
 
 export interface UserFields {

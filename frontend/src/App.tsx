@@ -13,6 +13,7 @@ import {selectUser} from './features/users/usersSlice';
 import ProtectedRoute from './UI/ProtectedRoute/ProtectedRoute';
 import ArtistForm from './features/artists/components/ArtistForm';
 import AlbumForm from './features/albums/components/AlbumForm';
+import TrackForm from './features/tracks/components/TrackForm';
 
 const App = () => {
   const user = useAppSelector(selectUser);
@@ -35,6 +36,11 @@ const App = () => {
           <Route path="/add-new-artist" element={
             <ProtectedRoute isAllowed={user && (user.role === 'user' || user.role === 'admin')}>
               <ArtistForm/>
+            </ProtectedRoute>
+          } />
+          <Route path="/add-new-track" element={
+            <ProtectedRoute isAllowed={user && (user.role === 'user' || user.role === 'admin')}>
+              <TrackForm/>
             </ProtectedRoute>
           } />
           <Route path="/track-history" element={

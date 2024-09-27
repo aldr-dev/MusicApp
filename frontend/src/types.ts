@@ -56,6 +56,25 @@ export interface CreateAlbumMutation {
   image: File | null;
 }
 
+export interface CreateTrackMutation {
+  album: string;
+  title: string;
+  duration: string;
+  trackNumber: string;
+  youTubeLink: string;
+}
+
+export interface TrackMutationFrom {
+  artist: string;
+  album: string;
+  title: string;
+  duration: string;
+  trackNumber: string;
+  youTubeLink: string;
+}
+
+export type TrackMutationObject = Omit<CreateTrackMutation, 'artist'>;
+
 
 export interface User {
   _id: string;

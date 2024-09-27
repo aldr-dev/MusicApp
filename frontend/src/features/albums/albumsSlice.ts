@@ -23,6 +23,7 @@ export const albumsSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(createAlbum.pending, (state) => {
       state.createLoading = true;
+      state.createError = null;
     });
     builder.addCase(createAlbum.fulfilled, (state) => {
       state.createLoading = false;

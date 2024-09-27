@@ -27,6 +27,7 @@ export const artistsSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(createArtist.pending, (state) => {
       state.createLoading = true;
+      state.createError = null;
     });
     builder.addCase(createArtist.fulfilled, (state) => {
       state.createLoading = false;

@@ -28,16 +28,16 @@ const ArtistForm = () => {
     return error?.errors[fieldName]?.message;
   };
 
-  const handleResetFileName = (status: boolean) => {
-    setResetFileName(status);
-  };
-
   const inputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {name, value} = event.target;
     setState((prevState) => ({
       ...prevState,
       [name]: value,
     }));
+  };
+
+  const handleResetFileName = (status: boolean) => {
+    setResetFileName(status);
   };
 
   const onChangeFileInput = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -182,6 +182,10 @@ const ArtistForm = () => {
             background: '#1CD760',
             '&:hover': {
               background: '#14af4d',
+            },
+            '&.Mui-disabled': {
+              background: '#b2b2b2',
+              color: '#757575',
             }
           }}
           color="primary"
