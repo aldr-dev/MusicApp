@@ -9,6 +9,7 @@ export interface ArtistsTypes {
 
 export interface AlbumsTypes {
   _id: string;
+  user: string;
   artist: ArtistsTypes;
   title: string;
   dataRelease: number,

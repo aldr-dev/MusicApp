@@ -44,23 +44,23 @@ albumsRouter.get('/', role, async (req: RequestWithUser, res, next) => {
     if (req.user) {
       if (artistId) {
         if (req.user.role === 'admin') {
-          albums = await Album.find({artist: artistId}, {user: 0}).populate('artist').sort({dataRelease: -1});
+          albums = await Album.find({artist: artistId}).populate('artist').sort({dataRelease: -1});
         } else if (req.user.role === 'user') {
-          albums = await Album.find({artist: artistId, $or: [{isPublished: true}, {user: req.user._id, isPublished: false}]}, {user: 0}).populate('artist').sort({dataRelease: -1});
+          albums = await Album.find({artist: artistId, $or: [{isPublished: true}, {user: req.user._id, isPublished: false}]}).populate('artist').sort({dataRelease: -1});
         } else {
-          albums = await Album.find({artist: artistId, isPublished: true}, {user: 0}).populate('artist').sort({dataRelease: -1});
+          albums = await Album.find({artist: artistId, isPublished: true}).populate('artist').sort({dataRelease: -1});
         }
       } else {
         if (req.user.role === 'admin') {
-          albums = await Album.find({}, {user: 0}).sort({dataRelease: -1});
+          albums = await Album.find({}).sort({dataRelease: -1});
         } else if (req.user.role === 'user') {
-          albums = await Album.find({$or: [{isPublished: true}, {user: req.user._id, isPublished: false}]}, {user: 0}).sort({dataRelease: -1});
+          albums = await Album.find({$or: [{isPublished: true}, {user: req.user._id, isPublished: false}]}).sort({dataRelease: -1});
         } else {
-          albums = await Album.find({isPublished: true}, {user: 0}).populate('artist').sort({dataRelease: -1});
+          albums = await Album.find({isPublished: true}).populate('artist').sort({dataRelease: -1});
         }
       }
     } else {
-      albums = await Album.find({artist: artistId, isPublished: true}, {user: 0}).sort({dataRelease: -1});
+      albums = await Album.find({artist: artistId, isPublished: true}).sort({dataRelease: -1});
     }
 
       const albumPromises = albums.map(async (album) => {
