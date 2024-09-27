@@ -1,11 +1,15 @@
-import React from 'react';
-import {TableCell, TableRow} from '@mui/material';
+import React, {useState} from 'react';
+import {Box, Button, Menu, MenuItem, TableCell, TableRow, Typography} from '@mui/material';
 import {TracksTypes} from '../../../types';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import {useAppDispatch, useAppSelector} from '../../../app/hooks';
 import {selectUser} from '../../users/usersSlice';
 import {sendTrackHistories} from '../../trackHistory/trackHistoryThunk';
 import {toast} from 'react-toastify';
+import {deleteTrack, fetchTracksData, toggleTrack} from '../tracksThunks';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import PublishIcon from '@mui/icons-material/Publish';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 interface Props {
   track: TracksTypes;
@@ -33,12 +37,39 @@ const TracksTable: React.FC<Props> = ({track}) => {
     }
   };
 
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const isOpen = Boolean(anchorEl);
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleIsPublishedTrack = async () => {
+    await dispatch(toggleTrack(track._id));
+    await dispatch(fetchTracksData(track.album._id));
+  };
+
+  const handleDeleteTrack = async () => {
+    const confirmDelete = confirm('Вы действительно хотите удалить трек?');
+    if (confirmDelete) {
+      await dispatch(deleteTrack(track._id));
+      await dispatch(fetchTracksData(track.album._id));
+    }
+  };
+
+  const isArtistOwner = track.user === user?._id;
+  const isAdmin = user?.role === 'admin';
+
   return (
     <TableRow>
-      <TableCell sx={{color: '#fff', borderBottomColor: 'rgba(255, 255, 255, .1)'}}>
+      <TableCell sx={{color: '#fff', borderBottomColor: 'rgba(255, 255, 255, .1)', height: '70px'}}>
         {track.trackNumber}
       </TableCell>
-      <TableCell sx={{color: '#fff', borderBottomColor: 'rgba(255, 255, 255, .1)', display: 'flex', alignItems: 'center', gap: '10px'}}>
+      <TableCell sx={{color: '#fff', borderBottomColor: 'rgba(255, 255, 255, .1)', display: 'flex', alignItems: 'center', gap: '10px', height: '70px'}}>
         {user ?
           <PlayCircleIcon onClick={() => handleClickPlayer(track._id)}
             sx={{
@@ -54,8 +85,63 @@ const TracksTable: React.FC<Props> = ({track}) => {
           /> : null}
         {track.title}
       </TableCell>
-      <TableCell sx={{color: '#fff', borderBottomColor: 'rgba(255, 255, 255, .1)'}}>
+      <TableCell sx={{color: '#fff', borderBottomColor: 'rgba(255, 255, 255, .1)', height: '70px'}}>
         {track.duration}
+      </TableCell>
+      <TableCell sx={{color: '#fff', borderBottomColor: 'rgba(255, 255, 255, .1)', height: '70px'}}>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '20px' }}>
+
+          {!track.isPublished && (isArtistOwner || isAdmin) && (
+            <Typography
+              sx={{
+                color: '#fff',
+                background: '#f34e3e',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                display: 'inline-block',
+                padding: '4px 8px',
+                border: '1px solid rgba(255, 255, 255, 0.6)',
+                borderRadius: '12px',
+                fontWeight: 'bold',
+                fontSize: '0.875rem',
+              }}
+              variant='body2'>
+              Не опубликован
+            </Typography>
+          )}
+
+          {((!track.isPublished && isArtistOwner) || isAdmin) && (
+            <Box>
+              <Button
+                onClick={handleClick}
+                sx={{
+                  minWidth: 0,
+                  width: 30,
+                  height: 30,
+                  borderRadius: '50%',
+                  backgroundColor: '#1f1f1f',
+                  color: '#fff',
+                  '&:hover': {
+                    backgroundColor: '#333'
+                  },
+                }}>
+                <MoreHorizIcon />
+              </Button>
+              <Menu open={isOpen} anchorEl={anchorEl} onClose={handleClose} keepMounted sx={{ '& .MuiPaper-root': { minWidth: 120 } }}>
+                {!track.isPublished && isAdmin && (
+                  <MenuItem onClick={handleIsPublishedTrack} sx={{ padding: '4px 8px', fontSize: '0.875rem' }}>
+                    <PublishIcon sx={{ fontSize: '18px' }} />&nbsp;Опубликовать
+                  </MenuItem>
+                )}
+                {(isArtistOwner || isAdmin) && (
+                  <MenuItem onClick={handleDeleteTrack} sx={{ padding: '4px 8px', fontSize: '0.875rem' }}>
+                    <DeleteIcon sx={{ fontSize: '18px' }} />&nbsp;Удалить
+                  </MenuItem>
+                )}
+              </Menu>
+            </Box>
+          )}
+        </Box>
       </TableCell>
     </TableRow>
   );

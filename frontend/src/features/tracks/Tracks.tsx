@@ -96,6 +96,7 @@ const Tracks = () => {
                     <TableCell sx={{color: '#fff', fontWeight: 'bold', fontSize: '15px', borderBottomColor: 'rgba(255, 255, 255, .1)'}}>#</TableCell>
                     <TableCell sx={{color: '#fff', fontWeight: 'bold', fontSize: '15px', borderBottomColor: 'rgba(255, 255, 255, .1)'}}>Название трека</TableCell>
                     <TableCell sx={{color: '#fff', fontWeight: 'bold', fontSize: '15px', borderBottomColor: 'rgba(255, 255, 255, .1)'}}>Продолжительность</TableCell>
+                    <TableCell sx={{color: '#fff', fontWeight: 'bold', fontSize: '15px', borderBottomColor: 'rgba(255, 255, 255, .1)'}}></TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>

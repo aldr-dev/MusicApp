@@ -43,23 +43,23 @@ tracksRouter.get('/', role , async (req:RequestWithUser, res, next) => {
     if (req.user) {
       if (tracksId) {
         if (req.user.role === 'admin') {
-          tracks = await Track.find({album: tracksId}, {user: 0}).populate('album').sort({trackNumber: 1});
+          tracks = await Track.find({album: tracksId}).populate('album').sort({trackNumber: 1});
         } else if (req.user.role === 'user') {
-          tracks = await Track.find({album: tracksId, $or: [{isPublished: true}, {user: req.user._id, isPublished: false}]}, {user: 0}).populate('album').sort({trackNumber: 1});
+          tracks = await Track.find({album: tracksId, $or: [{isPublished: true}, {user: req.user._id, isPublished: false}]}).populate('album').sort({trackNumber: 1});
         } else {
-          tracks = await Track.find({album: tracksId, isPublished: true}, {user: 0}).populate('album').sort({trackNumber: 1});
+          tracks = await Track.find({album: tracksId, isPublished: true}).populate('album').sort({trackNumber: 1});
         }
       } else {
         if (req.user.role === 'admin') {
-          tracks = await Track.find({}, {user: 0}).sort({trackNumber: 1});
+          tracks = await Track.find({}).sort({trackNumber: 1});
         } else if (req.user.role === 'user') {
-          tracks = await Track.find({$or: [{isPublished: true}, {user: req.user._id, isPublished: false}]}, {user: 0}).sort({trackNumber: 1});
+          tracks = await Track.find({$or: [{isPublished: true}, {user: req.user._id, isPublished: false}]}).sort({trackNumber: 1});
         } else {
-          tracks = await Track.find({isPublished: true}, {user: 0}).sort({trackNumber: 1});
+          tracks = await Track.find({isPublished: true}).sort({trackNumber: 1});
         }
       }
     } else {
-      tracks = await Track.find({album: tracksId, isPublished: true}, {user: 0}).populate('album').sort({trackNumber: 1});
+      tracks = await Track.find({album: tracksId, isPublished: true}).populate('album').sort({trackNumber: 1});
     }
 
     return res.send(tracks);

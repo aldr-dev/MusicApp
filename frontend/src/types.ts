@@ -20,6 +20,7 @@ export interface AlbumsTypes {
 
 export interface TracksTypes {
   _id: string;
+  user: string;
   album: {
     _id: string;
     title: string;
