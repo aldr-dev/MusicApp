@@ -1,5 +1,6 @@
 export interface ArtistsTypes {
   _id: string;
+  user: string;
   name: string;
   image: string | null;
   information: string;

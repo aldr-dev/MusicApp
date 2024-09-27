@@ -88,7 +88,7 @@ const TrackForm = () => {
             trackNumber: '',
             youTubeLink: '',
           });
-          navigate('/');
+          navigate(`/tracks/${state.album}`);
         }
       }
     } catch (error) {

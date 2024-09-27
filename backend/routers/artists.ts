@@ -40,13 +40,13 @@ artistsRouter.get('/', role, async (req: RequestWithUser, res, next) => {
 
     if (req.user) {
       if (req.user?.role === 'admin') {
-        artists = await Artist.find({}, { user: 0 }).sort({ _id: -1 });
+        artists = await Artist.find({}).sort({ _id: -1 });
       }
       if (req.user?.role === 'user') {
-        artists = await Artist.find({ $or: [{ isPublished: true }, { user: req.user._id, isPublished: false }] }, { user: 0 }).sort({ _id: -1 });
+        artists = await Artist.find({ $or: [{ isPublished: true }, { user: req.user._id, isPublished: false }] }).sort({ _id: -1 });
       }
     } else {
-      artists = await Artist.find({ isPublished: true }, { user: 0 }).sort({ _id: -1 });
+      artists = await Artist.find({ isPublished: true }).sort({ _id: -1 });
     }
 
     return res.send(artists);
