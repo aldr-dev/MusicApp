@@ -5,6 +5,7 @@ import auth, {RequestWithUser} from '../middleware/auth';
 import Track from '../models/Track';
 import Album from '../models/Album';
 import Artist from '../models/Artist';
+import permit from '../middleware/permit';
 
 const trackHistoryRouter = express.Router();
 
@@ -51,6 +52,28 @@ trackHistoryRouter.get('/', auth, async (req: RequestWithUser, res, next) => {
   try {
     const trackHistory = await TrackHistory.find({user: req.user?._id}).populate('track').populate('artist', 'name').sort({datetime: -1});
     return res.send(trackHistory);
+  } catch (error) {
+    return next(error);
+  }
+});
+
+trackHistoryRouter.delete('/:id', auth, permit('admin', 'user'), async (req: RequestWithUser, res, next) => {
+  try {
+    const id = req.params.id;
+
+    const foundTrackID = await TrackHistory.findOne({track: id});
+
+    if (!foundTrackID) {
+      return res.status(404).send({error: 'Track id not found!'});
+    }
+
+    if (foundTrackID.user.toString() !== req.user?._id.toString()) {
+      return res.status(403).send({error: 'Access denied You can\'t delete someone else\'s track from history'});
+    }
+
+    await TrackHistory.findByIdAndDelete(foundTrackID._id);
+
+    return res.send({message: 'The track has been removed from your listening history.'});
   } catch (error) {
     return next(error);
   }

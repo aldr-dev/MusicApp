@@ -4,7 +4,7 @@ import {TracksTypes} from '../../../types';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import {useAppDispatch, useAppSelector} from '../../../app/hooks';
 import {selectUser} from '../../users/usersSlice';
-import {sendTrackHistories} from '../../trackHistory/trackHistoryThunk';
+import {deleteTrackHistories, sendTrackHistories} from '../../trackHistory/trackHistoryThunk';
 import {toast} from 'react-toastify';
 import {deleteTrack, fetchTracksData, toggleTrack} from '../tracksThunks';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
@@ -57,6 +57,7 @@ const TracksTable: React.FC<Props> = ({track}) => {
     const confirmDelete = confirm('Вы действительно хотите удалить трек?');
     if (confirmDelete) {
       await dispatch(deleteTrack(track._id));
+      await dispatch(deleteTrackHistories(track._id));
       await dispatch(fetchTracksData(track.album._id));
     }
   };

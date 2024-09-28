@@ -15,7 +15,6 @@ export const fetchTrackHistories = createAsyncThunk<TrackHistoryTypes[], void, {
   }
 );
 
-
 export const sendTrackHistories = createAsyncThunk<void, string, { state: RootState }>(
   'trackHistory/sendTrackHistories', async (trackId, {rejectWithValue}) => {
     try {
@@ -28,3 +27,9 @@ export const sendTrackHistories = createAsyncThunk<void, string, { state: RootSt
       return rejectWithValue('Error send trackHistories ' + error);
     }
   });
+
+export const deleteTrackHistories = createAsyncThunk<void, string, { state: RootState }>(
+  'trackHistory/deleteTrackHistories', async (trackId) => {
+    await axiosApi.delete(`/track_history/${trackId}`);
+  }
+);
