@@ -71,41 +71,7 @@ const Login = () => {
               autoComplete="current-username"
               value={state.username}
               onChange={inputChangeHandler}
-              sx={{
-                backgroundColor: '#3A3A3A',
-                borderRadius: '8px',
-                '& .MuiOutlinedInput-root': {
-                  '& fieldset': {
-                    borderColor: '#1CD760',
-                  },
-                  '&:hover fieldset': {
-                    borderColor: '#14af4d',
-                  },
-                  '&.Mui-focused fieldset': {
-                    borderColor: '#1CD760',
-                  },
-                },
-                '& input:-webkit-autofill': {
-                  WebkitBoxShadow: '0 0 0 1000px #3A3A3A inset',
-                  WebkitTextFillColor: '#fff !important',
-                },
-                '& input': {
-                  color: '#fff',
-                },
-                '&.Mui-error': {
-                  '& input': {
-                    backgroundColor: '#3A3A3A',
-                  },
-                }
-              }}
-              InputLabelProps={{
-                sx: {
-                  color: '#fff',
-                  '&.Mui-focused': {
-                    color: '#fff',
-                  },
-                },
-              }}/>
+            />
           </Grid>
           <Grid item>
             <TextField
@@ -118,41 +84,6 @@ const Login = () => {
               autoComplete="current-password"
               value={state.password}
               onChange={inputChangeHandler}
-              sx={{
-                backgroundColor: '#3A3A3A',
-                borderRadius: '8px',
-                '& .MuiOutlinedInput-root': {
-                  '& fieldset': {
-                    borderColor: '#1CD760',
-                  },
-                  '&:hover fieldset': {
-                    borderColor: '#14af4d',
-                  },
-                  '&.Mui-focused fieldset': {
-                    borderColor: '#1CD760',
-                  },
-                },
-                '& input': {
-                  color: '#fff',
-                },
-                '& input:-webkit-autofill': {
-                  WebkitBoxShadow: '0 0 0 1000px #3A3A3A inset',
-                  WebkitTextFillColor: '#fff !important',
-                },
-                '&.Mui-error': {
-                  '& input': {
-                    backgroundColor: '#3A3A3A',
-                  },
-                },
-              }}
-              InputLabelProps={{
-                sx: {
-                  color: '#fff',
-                  '&.Mui-focused': {
-                    color: '#fff',
-                  },
-                },
-              }}
             />
           </Grid>
         </Grid>

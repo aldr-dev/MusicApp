@@ -69,7 +69,6 @@ const ArtistForm = () => {
     }
   };
 
-
   return (
     <>
       <Box component="form" onSubmit={submitFormHandler}>
@@ -85,41 +84,7 @@ const ArtistForm = () => {
               value={state.name}
               error={Boolean(getFieldError('name'))}
               helperText={getFieldError('name')}
-              sx={{
-                backgroundColor: '#3A3A3A',
-                borderRadius: '8px',
-                '& .MuiOutlinedInput-root': {
-                  '& fieldset': {
-                    borderColor: '#1CD760',
-                  },
-                  '&:hover fieldset': {
-                    borderColor: '#14af4d',
-                  },
-                  '&.Mui-focused fieldset': {
-                    borderColor: '#1CD760',
-                  },
-                },
-                '& input:-webkit-autofill': {
-                  WebkitBoxShadow: '0 0 0 1000px #3A3A3A inset',
-                  WebkitTextFillColor: '#fff !important',
-                },
-                '& input': {
-                  color: '#fff',
-                },
-                '&.Mui-error': {
-                  '& input': {
-                    backgroundColor: '#3A3A3A',
-                  },
-                }
-              }}
-              InputLabelProps={{
-                sx: {
-                  color: '#fff',
-                  '&.Mui-focused': {
-                    color: '#fff',
-                  },
-                },
-              }}/>
+            />
           </Grid>
           <Grid item xs={12}>
             <TextField
@@ -130,41 +95,7 @@ const ArtistForm = () => {
               value={state.information}
               multiline
               rows={4}
-              sx={{
-                backgroundColor: '#3A3A3A',
-                borderRadius: '8px',
-                '& .MuiOutlinedInput-root': {
-                  '& fieldset': {
-                    borderColor: '#1CD760',
-                  },
-                  '&:hover fieldset': {
-                    borderColor: '#14af4d',
-                  },
-                  '&.Mui-focused fieldset': {
-                    borderColor: '#1CD760',
-                  },
-                },
-                '& input:-webkit-autofill': {
-                  WebkitBoxShadow: '0 0 0 1000px #3A3A3A inset',
-                  WebkitTextFillColor: '#fff !important',
-                },
-                '& textarea': {
-                  color: '#fff',
-                },
-                '&.Mui-error': {
-                  '& textarea': {
-                    backgroundColor: '#3A3A3A',
-                  },
-                }
-              }}
-              InputLabelProps={{
-                sx: {
-                  color: '#fff',
-                  '&.Mui-focused': {
-                    color: '#fff',
-                  },
-                },
-              }}/>
+            />
           </Grid>
           <Grid item>
             <FileInput
@@ -172,7 +103,8 @@ const ArtistForm = () => {
               label="Изображение"
               name="image"
               resetFileName={resetFileName}
-              handleResetFileName={handleResetFileName}/>
+              handleResetFileName={handleResetFileName}
+            />
           </Grid>
         </Grid>
         <LoadingButton

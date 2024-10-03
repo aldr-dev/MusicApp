@@ -2,11 +2,15 @@ import {Button, Grid, styled} from '@mui/material';
 import {NavLink} from 'react-router-dom';
 
 const ActiveLink = styled(NavLink)({
+  borderTop: '1px solid transparent',
+  borderRadius: '0',
+  transition: 'border-color 0.3s ease',
   '&.active': {
-    color: '#1CD760',
+    borderTop: '1px solid #1CD760',
+    borderRadius: '0',
   },
   '&:hover': {
-    textShadow: '1px 1px 3px #1CD760',
+    color: '#1CD760',
   },
 });
 
