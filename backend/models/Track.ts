@@ -39,7 +39,6 @@ const TrackSchema = new mongoose.Schema<TrackFields>({
   trackNumber: {
     type: Number,
     required: [true, 'TrackNumber must be present'],
-    unique: true,
   },
   youTubeLink: {
     type: String,

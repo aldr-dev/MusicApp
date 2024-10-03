@@ -20,17 +20,23 @@ const run = async () => {
   }
 
   const [user1, user2, admin] = await User.create({
-    username: 'user1',
+    username: 'test1@test.com',
+    displayName: 'Иван',
+    avatar: 'fixtures/ivan.webp',
     password: '*H#*YGYU',
     role: 'user',
     token: crypto.randomUUID(),
   }, {
-    username: 'user2',
+    username: 'test2@test.com',
+    displayName: 'Петр',
+    avatar: 'fixtures/petr.jpg',
     password: '*IBU#D@BH',
     role: 'user',
     token: crypto.randomUUID(),
   }, {
-    username: 'admin',
+    username: 'admin@test.com',
+    displayName: 'Антон',
+    avatar: 'fixtures/anton.jpg',
     password: 'nif3i4bi@',
     role: 'admin',
     token: crypto.randomUUID(),

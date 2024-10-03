@@ -118,7 +118,7 @@ const Register = () => {
               <FileInput
                 onChange={onChangeFileInput}
                 label="Аватарка"
-                name="image"
+                name="avatar"
                 resetFileName={resetFileName}
                 handleResetFileName={handleResetFileName}
               />

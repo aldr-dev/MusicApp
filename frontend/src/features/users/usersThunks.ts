@@ -13,7 +13,7 @@ export const register = createAsyncThunk<User, RegisterMutation, { rejectValue: 
       formData.append('displayName', registerMutation.displayName);
 
       if (registerMutation.avatar) {
-        formData.append('image', registerMutation.avatar);
+        formData.append('avatar', registerMutation.avatar);
       }
       formData.append('password', registerMutation.password);
 
