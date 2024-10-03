@@ -10,6 +10,7 @@ const UserSchema = new mongoose.Schema<UserFields, UserModel, UserMethods>({
     type: String,
     required: true,
     unique: true,
+    match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,5})+$/, 'Please fill a valid email address!'],
     validate: {
       validator: async function(value: string): Promise<boolean> {
         if (!(this as HydratedDocument<UserFields> ).isModified('username')) {
@@ -21,6 +22,10 @@ const UserSchema = new mongoose.Schema<UserFields, UserModel, UserMethods>({
       },
       message: 'This user is already registered!',
     }
+  },
+  displayName: {
+    type: String,
+    required: [true, 'Name must be provided!'],
   },
   password: {
     type: String,
@@ -35,7 +40,9 @@ const UserSchema = new mongoose.Schema<UserFields, UserModel, UserMethods>({
     required: true,
     default: 'user',
     enum: ['user', 'admin'],
-  }
+  },
+  avatar: String,
+  googleID: String,
 });
 
 UserSchema.methods.checkPassword = function(password) {

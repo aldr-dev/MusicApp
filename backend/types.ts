@@ -29,6 +29,9 @@ export interface UserFields {
   password: string;
   token: string;
   role: string;
+  avatar: string | null;
+  displayName?: string;
+  googleID?: string;
 }
 
 export interface AlbumFields {

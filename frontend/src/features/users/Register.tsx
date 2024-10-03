@@ -1,18 +1,21 @@
 import React, {useState} from 'react';
-import {Avatar, Box, Grid, TextField, Typography, Link} from '@mui/material';
+import {Avatar, Box, Grid, TextField, Typography, Link, Alert} from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import {Link as RouterLink, useNavigate} from 'react-router-dom';
-import {selectRegisterError, selectRegisterLoading} from './usersSlice';
+import {selectGoogleError, selectGoogleLoading, selectRegisterError, selectRegisterLoading} from './usersSlice';
 import {RegisterMutation} from '../../types';
 import {useAppDispatch, useAppSelector} from '../../app/hooks';
 import {register} from './usersThunks';
 import {LoadingButton} from '@mui/lab';
+import LoginWithGoogle from './components/LoginWithGoogle';
 
 const Register = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const registerLoader = useAppSelector(selectRegisterLoading);
   const error = useAppSelector(selectRegisterError);
+  const googleLoader = useAppSelector(selectGoogleLoading);
+  const googleError = useAppSelector(selectGoogleError);
 
   const [state, setState] = useState<RegisterMutation>({
     username: '',
@@ -63,14 +66,15 @@ const Register = () => {
       <Typography component="h1" color="#ffffff" variant="h5" sx={{mb: 3}}>
         Регистрация
       </Typography>
-      <Box component="form" noValidate onSubmit={submitFormHandler} sx={{width: '100%'}}>
+      <Box component="form" onSubmit={submitFormHandler} sx={{width: '100%'}}>
         <Grid container direction="column" spacing={3}>
           <Grid item>
             <TextField
               required
+              type="email"
               fullWidth
               variant="outlined"
-              label="Имя пользователя"
+              label="Электронная почта"
               name="username"
               autoComplete="new-username"
               value={state.username}
@@ -98,7 +102,7 @@ const Register = () => {
         <LoadingButton
           type="submit"
           disabled={state.username.trim().length === 0 || state.password.trim().length === 0}
-          loading={registerLoader}
+          loading={registerLoader || googleLoader}
           variant="contained"
           sx={{
             mt: 4,
@@ -121,6 +125,9 @@ const Register = () => {
           }}>
           <span>Регистрация</span>
         </LoadingButton>
+        <Box sx={{ mt: 3 }}>
+          <LoginWithGoogle />
+        </Box>
         <Link
           component={RouterLink}
           to="/login"
@@ -139,6 +146,11 @@ const Register = () => {
           Уже есть аккаунт? Войти
         </Link>
       </Box>
+      {googleError && (
+        <Alert severity="error" sx={{mt: 3, width: '100%'}}>
+          {googleError.error}
+        </Alert>
+      )}
     </Box>
   );
 };
