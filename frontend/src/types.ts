@@ -38,7 +38,9 @@ export interface TracksTypes {
 
 export interface RegisterMutation {
   username: string;
+  displayName: string;
   password: string;
+  avatar: File | null;
 }
 
 export interface LoginMutation {
@@ -84,6 +86,8 @@ export interface User {
   username: string;
   token: string;
   role: string;
+  displayName: string;
+  avatar: string;
 }
 
 export interface ValidationError {

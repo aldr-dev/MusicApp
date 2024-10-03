@@ -8,6 +8,7 @@ import {useAppDispatch, useAppSelector} from '../../app/hooks';
 import {register} from './usersThunks';
 import {LoadingButton} from '@mui/lab';
 import LoginWithGoogle from './components/LoginWithGoogle';
+import FileInput from '../../UI/FileInput/FileInput';
 
 const Register = () => {
   const dispatch = useAppDispatch();
@@ -17,14 +18,13 @@ const Register = () => {
   const googleLoader = useAppSelector(selectGoogleLoading);
   const googleError = useAppSelector(selectGoogleError);
 
+  const [resetFileName, setResetFileName] = useState(false);
   const [state, setState] = useState<RegisterMutation>({
     username: '',
+    displayName: '',
     password: '',
+    avatar: null,
   });
-
-  const getFieldError = (fieldName: string) => {
-    return error?.errors[fieldName]?.message;
-  };
 
   const inputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {name, value} = event.target;
@@ -34,11 +34,29 @@ const Register = () => {
     }));
   };
 
+  const getFieldError = (fieldName: string) => {
+    return error?.errors[fieldName]?.message;
+  };
+
+  const onChangeFileInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const {name, files} = event.target;
+    const value = files && files[0] ? files[0] : null;
+    setState((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleResetFileName = (status: boolean) => {
+    setResetFileName(status);
+  };
+
   const submitFormHandler = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      if (state.username.trim().length !== 0 && state.password.trim().length !== 0) {
+      if (state.username.trim().length !== 0 && state.displayName.trim().length !== 0 && state.password.trim().length !== 0) {
         await dispatch(register(state)).unwrap();
+        setResetFileName(true);
         navigate('/');
       }
     } catch (error) {
@@ -88,6 +106,28 @@ const Register = () => {
               required
               fullWidth
               variant="outlined"
+              label="Имя пользователя"
+              name="displayName"
+              value={state.displayName}
+              onChange={inputChangeHandler}
+              error={Boolean(getFieldError('displayName'))}
+              helperText={getFieldError('displayName')}
+            />
+          </Grid>
+            <Grid item>
+              <FileInput
+                onChange={onChangeFileInput}
+                label="Аватарка"
+                name="image"
+                resetFileName={resetFileName}
+                handleResetFileName={handleResetFileName}
+              />
+            </Grid>
+          <Grid item>
+            <TextField
+              required
+              fullWidth
+              variant="outlined"
               type="password"
               label="Пароль"
               name="password"
@@ -101,7 +141,11 @@ const Register = () => {
         </Grid>
         <LoadingButton
           type="submit"
-          disabled={state.username.trim().length === 0 || state.password.trim().length === 0}
+          disabled={
+            state.username.trim().length === 0 ||
+            state.displayName.trim().length === 0 ||
+            state.password.trim().length === 0
+          }
           loading={registerLoader || googleLoader}
           variant="contained"
           sx={{
