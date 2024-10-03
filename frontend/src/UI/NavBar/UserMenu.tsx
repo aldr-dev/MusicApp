@@ -35,7 +35,7 @@ const UserMenu: React.FC<Props> = ({user}) => {
   return (
     <Grid item>
       <Button sx={{display: 'flex', alignItems: 'center'}} onClick={handleClick}>
-        <Avatar alt="Avatar" src={user.avatar.includes('images') || user.avatar.includes('fixtures') ? `${API_URL}/${user.avatar}` : user.avatar} sx={{ width: 38, height: 38, cursor: 'pointer', borderRadius: '10px', border: '1px solid #eee', marginRight: '10px'}} />
+        <Avatar alt="Avatar" src={user.avatar && (user.avatar.includes('images') || user.avatar.includes('fixtures') ? `${API_URL}/${user.avatar}` : user.avatar)} sx={{ width: 38, height: 38, cursor: 'pointer', borderRadius: '10px', border: '1px solid #eee', marginRight: '10px'}} />
         <Typography color="#fff" variant="body2">{user.displayName}</Typography>
         <KeyboardArrowDownIcon sx={{color: '#fff'}}/>
       </Button>
