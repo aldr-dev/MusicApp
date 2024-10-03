@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import {Button, Grid, Menu, MenuItem} from '@mui/material';
+import {Avatar, Button, Grid, Menu, MenuItem, Typography} from '@mui/material';
 import {User} from '../../types';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import {Link} from 'react-router-dom';
+import PersonIcon from '@mui/icons-material/Person';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import LogoutIcon from '@mui/icons-material/Logout';
 import HistoryIcon from '@mui/icons-material/History';
@@ -32,13 +33,20 @@ const UserMenu: React.FC<Props> = ({user}) => {
 
   return (
     <Grid item>
-      <Button onClick={handleClick} color="inherit">Привет, {user.username} <KeyboardArrowDownIcon/></Button>
+      <Button sx={{display: 'flex', alignItems: 'center'}} onClick={handleClick}>
+        <Avatar alt="Avatar" src={user.avatar} sx={{ width: 38, height: 38, cursor: 'pointer', borderRadius: '10px', border: '1px solid #eee', marginRight: '10px'}} />
+        <Typography color="#fff" variant="body2">{user.displayName}</Typography>
+        <KeyboardArrowDownIcon sx={{color: '#fff'}}/>
+      </Button>
+
       <Menu open={isOpen} anchorEl={anchorEl} onClose={handleClose} keepMounted>
-        <MenuItem to='/add-new-artist' component={Link}><PostAddIcon/>&nbsp;Добавить исполнителя</MenuItem>
-        <MenuItem to='/add-new-album' component={Link}><PostAddIcon/>&nbsp;Добавить альбом</MenuItem>
-        <MenuItem to='/add-new-track' component={Link}><PostAddIcon/>&nbsp;Добавить трек</MenuItem>
+        <MenuItem><PersonIcon/>&nbsp;{user.username}</MenuItem>
         <hr/>
-        <MenuItem to='/track-history' component={Link}><HistoryIcon/>&nbsp;История прослушивания</MenuItem>
+        <MenuItem to="/add-new-artist" component={Link}><PostAddIcon/>&nbsp;Добавить исполнителя</MenuItem>
+        <MenuItem to="/add-new-album" component={Link}><PostAddIcon/>&nbsp;Добавить альбом</MenuItem>
+        <MenuItem to="/add-new-track" component={Link}><PostAddIcon/>&nbsp;Добавить трек</MenuItem>
+        <hr/>
+        <MenuItem to="/track-history" component={Link}><HistoryIcon/>&nbsp;История прослушивания</MenuItem>
         <MenuItem onClick={handleLogout}><LogoutIcon/>&nbsp;Выйти</MenuItem>
       </Menu>
     </Grid>
